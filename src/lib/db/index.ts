@@ -20,12 +20,49 @@ let initialized = false;
 function getDbClient(): Client {
   if (dbInstance) return dbInstance;
 
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+  // 1. If remote libSQL / Turso cloud database URL is configured
+  const remoteUrl = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
+  if (remoteUrl) {
+    dbInstance = createClient({
+      url: remoteUrl,
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    });
+    return dbInstance;
   }
 
-  const dbPath = path.join(dataDir, "sibaq.db");
+  // 2. Serverless environment handling (e.g., Vercel read-only filesystem)
+  const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+  let dbPath: string;
+
+  if (isServerless) {
+    const tmpDataDir = "/tmp";
+    const tmpDbPath = path.join(tmpDataDir, "sibaq.db");
+    const bundledDbPath = path.join(process.cwd(), "data", "sibaq.db");
+
+    // Copy bundled database to writable /tmp if not already present
+    if (!fs.existsSync(tmpDbPath)) {
+      if (fs.existsSync(bundledDbPath)) {
+        try {
+          fs.copyFileSync(bundledDbPath, tmpDbPath);
+        } catch (e) {
+          console.warn("Could not copy bundled db to /tmp:", e);
+        }
+      }
+    }
+    dbPath = tmpDbPath;
+  } else {
+    // Local development
+    const dataDir = path.join(process.cwd(), "data");
+    if (!fs.existsSync(dataDir)) {
+      try {
+        fs.mkdirSync(dataDir, { recursive: true });
+      } catch (e) {
+        console.warn("Could not create data dir:", e);
+      }
+    }
+    dbPath = path.join(dataDir, "sibaq.db");
+  }
+
   // Normalize Windows paths for libsql file: url
   const normalizedPath = dbPath.replace(/\\/g, "/");
 
