@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Exact Sage & Cream × Samsung One UI Palette */
+  --oneui-cream: #FAF9F6;
+  --oneui-sage: #A3B18A;
+  --oneui-forest: #344E41;
+  --oneui-lime: #E9EDC9;
+  --oneui-surface: #F0F1E9;
+  --oneui-white: #FFFFFF;
+
+  --bg-primary: #FAF9F6;
+  --text-main: #344E41;
+  --text-muted: #5B7266;
+  --accent-sage: #A3B18A;
+  --card-bg: rgba(255, 255, 255, 0.86);
+  --card-border: rgba(163, 177, 138, 0.22);
+}
+
+/* Theme support retaining user preference capability */
+body[data-theme="peaceful-garden"] {
+  --bg-primary: #FAF9F6;
+  --text-main: #344E41;
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(163, 177, 138, 0.24);
+}
+
+body[data-theme="morning-mist"] {
+  --bg-primary: #F4F7F8;
+  --text-main: #2C3E36;
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(163, 177, 138, 0.2);
+}
+
+body[data-theme="soft-sky"] {
+  --bg-primary: #F2F6F7;
+  --text-main: #2A3C34;
+  --card-bg: rgba(255, 255, 255, 0.90);
+  --card-border: rgba(163, 177, 138, 0.2);
+}
+
+body[data-theme="warm-evening"] {
+  --bg-primary: #FAF7F0;
+  --text-main: #3C362A;
+  --card-bg: rgba(255, 255, 255, 0.90);
+  --card-border: rgba(216, 181, 109, 0.25);
+}
+
+body[data-theme="minimal-ivory"] {
+  --bg-primary: #FAF9F6;
+  --text-main: #344E41;
+  --card-bg: #FFFFFF;
+  --card-border: rgba(163, 177, 138, 0.18);
+}
+
+/* Seamless Ambient Gradient Background Flow */
+body {
+  color: var(--text-main);
+  background: linear-gradient(
+    130deg,
+    #FAF9F6 0%,
+    #F3F5ED 25%,
+    #FAF9F6 50%,
+    #EFF2E7 75%,
+    #FAF9F6 100%
+  );
+  background-size: 300% 300%;
+  animation: ambientFlow 26s ease-in-out infinite;
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-arabic {
+  font-family: 'Amiri', 'Traditional Arabic', 'Scheherazade New', 'Noto Naskh Arabic', serif;
+  line-height: 2.2;
+  direction: rtl;
+}
+
+.font-hero {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+}
+
+/* =========================================================================
+   Samsung One UI × Frosted Glass Design Language
+   ========================================================================= */
+
+.glass-panel,
+.oneui-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  box-shadow: 0 16px 36px -10px rgba(52, 78, 65, 0.07), 0 4px 12px -2px rgba(52, 78, 65, 0.03);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.glass-panel-elevated,
+.oneui-card-elevated {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(163, 177, 138, 0.32);
+  border-radius: 32px;
+  box-shadow: 0 24px 48px -12px rgba(52, 78, 65, 0.10), 0 6px 16px -4px rgba(52, 78, 65, 0.04);
+}
+
+/* Samsung One UI Clean White Inner Surfaces */
+.oneui-inner-surface {
+  background: #FFFFFF;
+  border: 1px solid rgba(163, 177, 138, 0.16);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(52, 78, 65, 0.02);
+}
+
+/* Subtle One UI Pill Badge */
+.oneui-pill {
+  border-radius: 9999px;
+  background: rgba(233, 237, 201, 0.65);
+  border: 1px solid rgba(163, 177, 138, 0.35);
+  color: #344E41;
+  font-weight: 600;
+}
+
+/* Text-fill animation utility */
+.text-fill-sweep {
+  background: linear-gradient(to left, #344E41 50%, #A3B18A 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.1s linear;
+}
+
+/* Ambient gradient keyframes for native CSS fallback */
+@keyframes ambientFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  body {
+    animation: none !important;
+    background: #FAF9F6 !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(240, 241, 233, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(163, 177, 138, 0.45);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(52, 78, 65, 0.55);
+}
